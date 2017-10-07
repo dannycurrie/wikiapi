@@ -68,13 +68,13 @@ describe('routes : index', function() {
 
     describe('GET / DOCUMENTS / <title> / <timestamp>', function() {
 
-      let title = 'title one';
-      let time = '06-10-2017';
+      let title = 'testDocOne';
+      let time = '2017-10-06T00:00:00Z';
 
       var expectedResult = {
         title: title,
-        revision: '321',
-        content: 'Here is the content at specific time'
+        revision: '1',
+        content: 'Content for test doc one'
       };
 
     it('should return the document as it was at that time', function(done) {

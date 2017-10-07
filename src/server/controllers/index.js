@@ -20,13 +20,11 @@ function getLatestDocument(title, callback) {
   callback('not implemented exception', result);
 }
 
-function getDocumentAtTime(title, time, callback) {
+function getDocumentAtTime(title, timestamp, callback) {
 
-  console.log('requesting ' + title + ' at ' + time);
+  console.log('requesting ' + title + ' at ' + timestamp);
 
-  let result = null;
-
-  callback('not implemented exception', result);
+  docService.getRevisionByDatetime(title, timestamp, callback);
 }
 
 function updateDocument(title, content, callback) {
