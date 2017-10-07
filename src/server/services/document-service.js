@@ -8,13 +8,20 @@ function getTitles (callback) {
         if(error)
             throw error;
 
-        files = files.filter(file => {
+        let uniqueTitles = [];
+
+        uniqueTitles = files.filter(file => {
+            // only text files
             return file.includes('.txt');
         }).map(file => {
-            return file.replace('.txt', '');
+            // strip revision and file ext
+            return file.substring(0, file.lastIndexOf('_'));
+        }).filter((file, pos, self) => {
+            // return only unique titles
+            return self.indexOf(file) === pos;
         });
 
-        callback(error, files);
+        callback(error, uniqueTitles);
     });
 }
 

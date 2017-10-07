@@ -2,8 +2,9 @@ var fs = require('fs');
 var path = require('path');
 
 function setUpTestDocs() {
-    fs.writeFileSync(path.join(__dirname + '/testDocOne.txt'), 'Content for test doc one');
-    fs.writeFileSync(path.join(__dirname + '/testDocTwo.txt'), 'Content for test doc two');
+    fs.writeFileSync(path.join(__dirname + '/testDocOne_1.txt'), 'Content for test doc one');
+    fs.writeFileSync(path.join(__dirname + '/testDocOne_2.txt'), 'Content for test doc one revision 2');
+    fs.writeFileSync(path.join(__dirname + '/testDocTwo_1.txt'), 'Content for test doc two');
 }
 
 function clearFileStore() {
