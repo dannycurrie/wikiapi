@@ -6,14 +6,18 @@ var chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 var server = require('../../src/server/app');
+var fileStoreSeed = require('../../src/server/documentstore/seed');
 
 describe('routes : index', function() {
 
   beforeEach(function(done) {
+    fileStoreSeed.clearFileStore();
+    fileStoreSeed.setUpTestDocs();
     done();
   });
 
   afterEach(function(done) {
+    fileStoreSeed.clearFileStore();
     done();
   });
 
@@ -30,6 +34,9 @@ describe('routes : index', function() {
         res.type.should.equal('application/json');
         res.body.should.be.a('array');
         res.body.length.should.be.eql(2);
+        let titles = res.body;
+        titles[0].should.equal('testDocOne');
+        titles[1].should.equal('testDocTwo');
 
         done();
       });

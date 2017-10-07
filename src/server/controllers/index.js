@@ -1,12 +1,11 @@
-
+const docService = require('../services/document-service');
 
 function getAvailableTitles(callback) {
-  let titles = [ 
-    { title: 'Title One' },
-    { title: 'Title Two' }
-  ];
+  let titles = [];
 
-  callback(null, titles);
+  // call to data service for titles
+  // TODO - better as a promise?
+  docService.getTitles(callback);
 }
 
 function getAvailableRevisions (title, callback) {

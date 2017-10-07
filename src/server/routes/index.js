@@ -19,6 +19,8 @@ router.get('/documents', (req, res) => {
 
   indexController.getAvailableTitles((error, titles) => {
 
+    console.log(titles);
+
     if (error) {
       res.send(error);
     }
