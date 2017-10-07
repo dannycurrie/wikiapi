@@ -38,7 +38,9 @@ function getRevisions (title, callback) {
             return file.substring(0, file.lastIndexOf('_')) === title;
         }).map(file => {
             // extract the revision number
-            return file.substring(file.lastIndexOf('_')).replace('_', '').replace('.txt', '');
+            return file.substring(file.lastIndexOf('_'))
+                                        .replace('_', '')
+                                        .replace('.txt', '');
         });
         
         callback(error, revNos);
