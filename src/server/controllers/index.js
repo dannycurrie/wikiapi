@@ -1,8 +1,6 @@
 const docService = require('../services/document-service');
 
 function getAvailableTitles(callback) {
-  let titles = [];
-
   // call to data service for titles
   // TODO - better as a promise?
   docService.getTitles(callback);
@@ -11,50 +9,35 @@ function getAvailableTitles(callback) {
 function getAvailableRevisions (title, callback) {
   console.log('requesting revisions for document: ' + title);
 
-  let revisions = [
-    { revision: '123' },
-    { revision: '321' }
-  ];
+  let revisions = null;
 
-  callback(null, revisions);
+  callback('not implemented exception', revisions);
 }
 
 function getLatestDocument(title, callback) {
   console.log('requesting latest version of ' + title);
 
-  let result = {
-    title: title,
-    revision: '456',
-    content: 'Here is the latest content'
-  };
+  let result = null;
 
-  callback(null, result);
+  callback('not implemented exception', result);
 }
 
 function getDocumentAtTime(title, time, callback) {
 
   console.log('requesting ' + title + ' at ' + time);
 
-  let result = {
-    title: title,
-    revision: '321',
-    content: 'Here is the content at specific time'
-  };
+  let result = null;
 
-  callback(null, result);
+  callback('not implemented exception', result);
 }
 
 function updateDocument(title, content, callback) {
 
   console.log('updating ' + title);
 
-  let updatedDoc = {
-    title: title,
-    revision: '321',
-    content: 'Here is the updated content'
-  };
+  let updatedDoc = null;
 
-  callback(null, updatedDoc);
+  callback('not implemented exception', updatedDoc);
 }
 
 module.exports = {
