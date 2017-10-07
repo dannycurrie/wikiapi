@@ -45,7 +45,7 @@ describe('routes : index', function() {
 
   describe('GET / DOCUMENTS / <title>', function() {
 
-    let title = 'title one';
+    let title = 'testDocOne';
 
     it('should return list of available revisions for a document with the supplied title', function(done) {
       chai.request(server)
@@ -57,6 +57,9 @@ describe('routes : index', function() {
         res.type.should.equal('application/json');
         res.body.should.be.a('array');
         res.body.length.should.be.eql(2);
+        let revisions = res.body;
+        revisions[0].should.equal('1');
+        revisions[1].should.equal('2');
 
         done();
       });

@@ -9,9 +9,7 @@ function getAvailableTitles(callback) {
 function getAvailableRevisions (title, callback) {
   console.log('requesting revisions for document: ' + title);
 
-  let revisions = null;
-
-  callback('not implemented exception', revisions);
+  docService.getRevisions(title, callback);
 }
 
 function getLatestDocument(title, callback) {
