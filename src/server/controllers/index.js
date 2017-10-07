@@ -15,9 +15,7 @@ function getAvailableRevisions (title, callback) {
 function getLatestDocument(title, callback) {
   console.log('requesting latest version of ' + title);
 
-  let result = null;
-
-  callback('not implemented exception', result);
+  docService.getLatestDocumentByTitle(title, callback);
 }
 
 function getDocumentAtTime(title, timestamp, callback) {

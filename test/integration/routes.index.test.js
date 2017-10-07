@@ -97,13 +97,13 @@ describe('routes : index', function() {
 
     describe('GET / DOCUMENTS / <title> / LATEST', function() {
 
-      let title = 'title one';
+      let title = 'testDocOne';
 
-      let expectedResult = {
+      var expectedResult = {
         title: title,
-        revision: '456',
-        content: 'Here is the latest content'
-    }
+        revision: '2',
+        content: 'Content for test doc one revision 2'
+      };
 
     it('should return current version of the document with the supplied title', function(done) {
       chai.request(server)

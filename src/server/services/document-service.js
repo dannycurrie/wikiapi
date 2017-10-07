@@ -91,7 +91,7 @@ function getRevisionByDatetime(title, timestamp, callback) {
 
         let document;
 
-        if(revisionToRtn){
+        if (revisionToRtn) {
             // contruct document to return
             let revisionNo = revisionToRtn.substring(revisionToRtn.lastIndexOf('_') + 1)
                                         .replace('.txt', '');
@@ -114,8 +114,46 @@ function getRevisionByDatetime(title, timestamp, callback) {
     });
 }
 
+function getLatestDocumentByTitle(title, callback) {
+
+    let document;
+
+    // get all revisions
+    fs.readdir('src/server/documentstore', (error, files) => {
+
+        // filter by title
+        let revisions = files.filter(file => {
+            return file.substring(0, file.lastIndexOf('_')) === title;
+        }).sort(); 
+
+        if(revisions.length === 0){
+            error = {
+                type: 'no result',
+                message: 'no documents found with title: ' + title 
+            }
+        } else {
+
+            const lastestRev = revisions[revisions.length - 1];
+
+            // construct document
+            let revisionNo = lastestRev.substring(lastestRev.lastIndexOf('_') + 1)
+                                            .replace('.txt', '');
+            let content = fs.readFileSync('src/server/documentstore/' + lastestRev, 'utf8');
+
+            document = {
+                title: title,
+                revision: revisionNo,
+                content: content
+            }
+        }
+
+        callback(error, document);
+    });
+}
+
 module.exports = {
     getTitles,
     getRevisions,
-    getRevisionByDatetime
+    getRevisionByDatetime,
+    getLatestDocumentByTitle
 };
