@@ -2,18 +2,18 @@ const fs = require('fs');
 const path = require('path');
 
 function getTitles (callback) {
-    
     // read store
     fs.readdir('src/server/documentstore', (error, files) => {
-        if(error)
+        if(error){
             throw error;
+        }
 
         let uniqueTitles = [];
 
-        uniqueTitles = files.filter(file => {
+        uniqueTitles = files.filter((file) => {
             // only text files
             return file.includes('.txt');
-        }).map(file => {
+        }).map((file) => {
             // strip revision and file ext
             return file.substring(0, file.lastIndexOf('_'));
         }).filter((file, pos, self) => {
@@ -28,21 +28,21 @@ function getTitles (callback) {
 function getRevisions (title, callback) {
     // return all which match the title
     fs.readdir('src/server/documentstore', (error, files) => {
-         if (error)
+         if (error) {
             throw error;
+         }
 
         let revNos = [];
 
-        revNos = files.filter(file => {
+        revNos = files.filter((file) => {
             // return files matching title
             return file.substring(0, file.lastIndexOf('_')) === title;
-        }).map(file => {
+        }).map((file) => {
             // extract the revision number
             return file.substring(file.lastIndexOf('_'))
                                         .replace('_', '')
                                         .replace('.txt', '');
         });
-        
         callback(error, revNos);
     });
 }
@@ -65,7 +65,7 @@ function getRevisionByDatetime(title, timestamp, callback) {
         let revisionToRtn;
 
         // get all revisions of this document
-        let allRevisions = files.filter(file => {
+        let allRevisions = files.filter((file) => {
             // return files matching title
             return file.substring(0, file.lastIndexOf('_')) === title;
         }).sort();
@@ -76,8 +76,6 @@ function getRevisionByDatetime(title, timestamp, callback) {
             let revision = allRevisions[i];
 
             let fileStats = fs.statSync('src/server/documentstore/' + revision);
-            
-            console.log('revision date ' + fileStats.mtime.toString());
 
             if(fileStats.mtime <= requestedDate){
                 revisionToRtn = revision;
@@ -124,12 +122,13 @@ function getLatestDocumentByTitle(title, callback) {
         // filter by title
         let revisions = files.filter(file => {
             return file.substring(0, file.lastIndexOf('_')) === title;
-        }).sort(); 
+        })
+        .sort();
 
         if(revisions.length === 0) {
             error = {
                 type: 'no result',
-                message: 'no documents found with title: ' + title 
+                message: 'no documents found with title: ' + title
             };
         } else {
 
