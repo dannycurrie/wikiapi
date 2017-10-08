@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
-const { check, validationResult } = require('express-validator/check');
-const { matchedData } = require('express-validator/filter');
+const {check, validationResult} = require('express-validator/check');
 
 router.get('/', function (req, res, next) {
     const renderObject = {};
@@ -61,14 +60,17 @@ router.get('/documents/:title/latest', (req, res) => {
     });
 });
 
-router.get('/documents/:title/:time', [
-  check('time').isISO8601()
-  .withMessage('Unrecognised Date format')
-], (req, res) => {
+router.get('/documents/:title/:time', 
+                                    [
+                                      check('time').isISO8601()
+                                      .withMessage('Unrecognised Date format')
+                                    ], 
+                                    (req, res) => {
 
+    // check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.mapped() });
+        return res.status(422).json({errors: errors.mapped() });
     }
 
     let title = req.sanitize(req.params.title);
