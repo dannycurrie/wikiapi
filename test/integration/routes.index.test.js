@@ -57,8 +57,10 @@ describe('routes : index', function () {
                     res.body.should.be.a('array');
                     res.body.length.should.be.eql(2);
                     let revisions = res.body;
-                    revisions[0].should.equal('1');
-                    revisions[1].should.equal('2');
+                    revisions[0].should.have.property('date');
+                    revisions[0].should.have.property('revision').equal('1');
+                    revisions[1].should.have.property('date');
+                    revisions[1].should.have.property('revision').equal('2');
 
                     done();
                 });
@@ -155,8 +157,10 @@ describe('routes : index', function () {
                             res.body.should.be.a('array');
                             res.body.length.should.be.eql(2);
                             let revisions = res.body;
-                            revisions[0].should.equal('1');
-                            revisions[1].should.equal('2');
+                            revisions[0].should.have.property('date');
+                            revisions[0].should.have.property('revision').equal('1');
+                            revisions[1].should.have.property('date');
+                            revisions[1].should.have.property('revision').equal('2');
 
                             done();
                         });

@@ -37,7 +37,12 @@ function getRevisions (title, callback) {
 
         revNos = filterFilesByTitle(title, files)
             .map((file) => {
-                return extractRevisionNumber(file);
+                const revNo = extractRevisionNumber(file);
+                const date = fs.statSync(docStorePath + file).mtime.toString();
+                return {
+                    revision: revNo.toString(),
+                    date: date
+                };
             });
         callback(error, revNos);
     });
@@ -80,7 +85,8 @@ function getRevisionByDatetime(title, timestamp, callback) {
             // contruct document to return
             let revisionNo = extractRevisionNumber(revisionToRtn);
             let content = fs.readFileSync(docStorePath + revisionToRtn, 'utf8');
-            document = createDocument(title, revisionNo, content);
+            let dateStr = fs.statSync(docStorePath + revisionToRtn).mtime.toString();
+            document = createDocument(title, revisionNo, content, dateStr);
 
         } else {
             error = {
@@ -112,7 +118,8 @@ function getLatestDocumentByTitle(title, callback) {
             // construct document
             let revisionNo = extractRevisionNumber(lastestRev);
             let content = fs.readFileSync(docStorePath + lastestRev, 'utf8');
-            document = createDocument(title, revisionNo, content);
+            let dateStr = fs.statSync(docStorePath + lastestRev).mtime.toString();
+            document = createDocument(title, revisionNo, content, dateStr);
         }
 
         callback(error, document);
@@ -136,14 +143,11 @@ function updateDocument(title, content, callback) {
             const newFilename = createNewFilename(title, revNo);
 
             // write file
-            fs.writeFileSync('src/server/documentstore/' + newFilename, content, 'utf-8');
+            fs.writeFileSync(docStorePath + newFilename, content, 'utf-8');
 
             // construct document to return
-            document = {
-                title: title,
-                revision: revNo.toString(),
-                content: content
-            };
+            let dateStr = fs.statSync(docStorePath + newFilename).mtime.toString();
+            document = createDocument(title, revNo.toString(), content, dateStr);
         }
 
         callback(error, document);
@@ -152,11 +156,12 @@ function updateDocument(title, content, callback) {
 
 // HELPER FUNCTIONS - abstracting away filename details from rest of code
 
-function createDocument(title, revisionNo, content) {
+function createDocument(title, revisionNo, content, dateStr) {
     return {
                 title: title,
                 revision: revisionNo,
-                content: content
+                content: content,
+                date: dateStr
             };
 }
 
