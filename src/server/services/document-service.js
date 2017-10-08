@@ -107,7 +107,7 @@ function getRevisionByDatetime(title, timestamp, callback) {
             error = {
                 type: 'no results',
                 message: 'there is no available revision for the date : ' + requestedDate.toString()
-            }
+            };
         }
 
         callback(error, document);
@@ -126,11 +126,11 @@ function getLatestDocumentByTitle(title, callback) {
             return file.substring(0, file.lastIndexOf('_')) === title;
         }).sort(); 
 
-        if(revisions.length === 0){
+        if(revisions.length === 0) {
             error = {
                 type: 'no result',
                 message: 'no documents found with title: ' + title 
-            }
+            };
         } else {
 
             const lastestRev = revisions[revisions.length - 1];
@@ -144,7 +144,40 @@ function getLatestDocumentByTitle(title, callback) {
                 title: title,
                 revision: revisionNo,
                 content: content
-            }
+            };
+        }
+
+        callback(error, document);
+    });
+}
+
+function updateDocument(title, content, callback) {
+    // get current revisions
+
+    let document;
+
+    fs.readdir('src/server/documentstore', (error, files) => {
+
+        if(!error) {
+
+            // filter files to only this document's revisions
+            files = files.filter(file => {
+                return file.substring(0, file.lastIndexOf('_')) === title;
+            });
+
+            // create title of new file with revision number
+            const revNo = files.length + 1;
+            const newFilename = title + '_' + revNo + '.txt';
+
+            // write file
+            fs.writeFileSync('src/server/documentstore/' + newFilename, content, 'utf-8');
+
+            // construct document to return
+            document = {
+                title: title,
+                revision: revNo.toString(),
+                content: content
+            };
         }
 
         callback(error, document);
@@ -155,5 +188,6 @@ module.exports = {
     getTitles,
     getRevisions,
     getRevisionByDatetime,
-    getLatestDocumentByTitle
+    getLatestDocumentByTitle,
+    updateDocument
 };

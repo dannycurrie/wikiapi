@@ -125,25 +125,45 @@ describe('routes : index', function() {
 
     describe('POST / DOCUMENTS / <title>', function() {
 
+      const newContent = {
+        title: 'testDocTwo',
+        content: 'Here is the updated content for testDocTwo'
+      }
+
       let updatedDoc = {
-        title: 'updated document',
-        revision: '321',
-        content: 'Here is the updated content'
+        title: 'testDocTwo',
+        revision: '2',
+        content: 'Here is the updated content for testDocTwo'
       };
 
     it('should create a new revision of the document', function(done) {
       chai.request(server)
       .post('/documents/' + updatedDoc.title)
-      .send(updatedDoc)
+      .send(newContent)
       .end(function(err, res) {
         res.status.should.equal(200);
+        res.type.should.equal('application/json');
 
-        res.body.should.be.a('object');
         res.body.should.have.property('message').equal(updatedDoc.title + ' successfully updated');
+        res.body.should.have.property('document');
+        res.body.document.should.have.property('title').equal(updatedDoc.title);
+        res.body.document.should.have.property('revision').equal(updatedDoc.revision);
+        res.body.document.should.have.property('content').equal(updatedDoc.content);
 
-        // todo - check updated content
-        
-        done();
+        // finally, check that the new revision exists in the dco store
+        chai.request(server)
+        .get('/documents/' + updatedDoc.title)
+        .end((err, res) => {
+          res.status.should.equal(200)
+          res.body.should.be.a('array');
+          res.body.length.should.be.eql(2);
+          let revisions = res.body;
+          revisions[0].should.equal('1');
+          revisions[1].should.equal('2');
+
+          done();
+        });
+
       });
     });
   });

@@ -19,7 +19,6 @@ function getLatestDocument(title, callback) {
 }
 
 function getDocumentAtTime(title, timestamp, callback) {
-
   console.log('requesting ' + title + ' at ' + timestamp);
 
   docService.getRevisionByDatetime(title, timestamp, callback);
@@ -29,9 +28,7 @@ function updateDocument(title, content, callback) {
 
   console.log('updating ' + title);
 
-  let updatedDoc = null;
-
-  callback('not implemented exception', updatedDoc);
+  docService.updateDocument(title, content, callback);
 }
 
 module.exports = {

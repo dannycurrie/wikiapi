@@ -5,14 +5,8 @@ const indexController = require('../controllers/index');
 
 router.get('/', function (req, res, next) {
   const renderObject = {};
-  renderObject.title = 'Welcome to Express!';
-  indexController.sum(1, 2, (error, results) => {
-    if (error) return next(error);
-    if (results) {
-      renderObject.sum = results;
-      res.render('index', renderObject);
-    }
-  });
+  renderObject.title = 'Wiki Document API';
+  res.render('index', renderObject);
 });
 
 router.get('/documents', (req, res) => {
@@ -63,7 +57,6 @@ router.get('/documents/:title/latest', (req, res) => {
     }
 
   });
-
 });
 
 router.get('/documents/:title/:time', (req, res) => {
@@ -82,7 +75,8 @@ router.get('/documents/:title/:time', (req, res) => {
 });
 
 router.post('/documents/:title', (req, res) => {
-  indexController.updateDocument(req.params.title, req.params.content, (error, document) => {
+
+  indexController.updateDocument(req.body.title, req.body.content, (error, document) => {
 
     if (error) {
       res.send(error);
