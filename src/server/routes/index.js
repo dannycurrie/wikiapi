@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/index');
+const { check, validationResult } = require('express-validator/check');
+const { matchedData } = require('express-validator/filter');
 
 router.get('/', function (req, res, next) {
     const renderObject = {};
@@ -27,7 +29,9 @@ router.get('/documents', (req, res) => {
 
 router.get('/documents/:title', (req, res) => {
 
-    indexController.getAvailableRevisions(req.params.title, (error, revisions) => {
+    let title = req.sanitize(req.params.title);
+
+    indexController.getAvailableRevisions(title, (error, revisions) => {
 
         if (error) {
             res.send(error);
@@ -42,7 +46,9 @@ router.get('/documents/:title', (req, res) => {
 
 router.get('/documents/:title/latest', (req, res) => {
 
-    indexController.getLatestDocument(req.params.title, (error, document) => {
+    let title = req.sanitize(req.params.title);
+
+    indexController.getLatestDocument(title, (error, document) => {
 
         if (error) {
             res.send(error);
@@ -55,8 +61,19 @@ router.get('/documents/:title/latest', (req, res) => {
     });
 });
 
-router.get('/documents/:title/:time', (req, res) => {
-    indexController.getDocumentAtTime(req.params.title, req.params.time, (error, document) => {
+router.get('/documents/:title/:time', [
+  check('time').isISO8601()
+  .withMessage('Unrecognised Date format')
+], (req, res) => {
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.mapped() });
+    }
+
+    let title = req.sanitize(req.params.title);
+
+    indexController.getDocumentAtTime(title, req.params.time, (error, document) => {
 
         if (error) {
             res.send(error);
@@ -71,7 +88,10 @@ router.get('/documents/:title/:time', (req, res) => {
 
 router.post('/documents/:title', (req, res) => {
 
-    indexController.updateDocument(req.body.title, req.body.content, (error, document) => {
+    let content = req.sanitize(req.body.content);
+    let title = req.sanitize(req.body.title);
+
+    indexController.updateDocument(title, content, (error, document) => {
 
         if (error) {
             res.send(error);

@@ -42,7 +42,7 @@ describe('routes : index', function () {
         });
     });
 
-  describe('GET / DOCUMENTS / <title>', function() {
+  describe('GET / DOCUMENTS / <title>', function () {
 
     let title = 'testDocOne';
 
@@ -120,11 +120,11 @@ describe('routes : index', function () {
             });
     });
 
-    describe('POST / DOCUMENTS / <title>', function() {
+    describe('POST / DOCUMENTS / <title>', function () {
 
         const newContent = {
             title: 'testDocTwo',
-            content: 'Here is the updated content for testDocTwo'
+            content: 'Here is the updated content for testDocTwo<script>injected script!</script>'
         }
 
         let updatedDoc = {
@@ -133,7 +133,7 @@ describe('routes : index', function () {
             content: 'Here is the updated content for testDocTwo'
         };
 
-    it('should create a new revision of the document', function (done) {
+    it('should create a new revision of the document not including malicious content', function (done) {
             chai.request(server)
                 .post('/documents/' + updatedDoc.title)
                 .send(newContent)

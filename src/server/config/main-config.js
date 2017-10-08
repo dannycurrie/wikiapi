@@ -10,6 +10,8 @@
   const flash = require('connect-flash');
   const morgan = require('morgan');
   const nunjucks = require('nunjucks');
+  const validator = require('express-validator');
+  const sanitizer = require('express-sanitizer');
 
   // *** view folders *** //
   const viewFolders = [
@@ -41,6 +43,8 @@
     //   resave: false,
     //   saveUninitialized: true
     // }));
+    app.use(validator());
+    app.use(sanitizer());
     app.use(flash());
     app.use(express.static(path.join(__dirname, '..', '..', 'client')));
 
