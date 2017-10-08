@@ -6,7 +6,14 @@
 
   <div class="container">
     <h1>{{title}}</h1>
-    <h2>The sum is {{sum}}</h2>
+    <h3>Available Endpoints</h3>
+    <ul>
+      <li>GET documents - returns all available document titles</li>
+      <li>GET documents/:title - returns all available revisions of document identified by the given title</li>
+      <li>GET documents/:title/:timestamp - returns document as it was at that timestamp</li>
+      <li>GET documents/:title/latest - returns latest version of document</li>
+      <li>POST documents/:title - creates and returns a new revision of the document</li>
+    </ul>
   </div>
 
 {% endblock %}
