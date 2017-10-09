@@ -84,7 +84,6 @@ describe('routes : index', function () {
                 .end(function (err, res) {
                     res.status.should.equal(200);
 
-                    // TODO
                     // check appropriate content returned
                     res.type.should.equal('application/json');
                     res.body.should.have.property('title').eql(expectedResult.title);
